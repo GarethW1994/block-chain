@@ -16,11 +16,11 @@ class Block {
 
 class Blockchain {
     constructor() {
-        this.chain = [this.createGenesisBlcok()];
+        this.chain = [this.createTestBlock()];
     }
 
-    createGenesisBlcok() {
-        return new Block(0, "01/01/2017", {amount: 200}, "0");
+    createTestBlock() {
+        return new Block(0, "01/01/2017", "Test Block", "0");
     }
 
     getLatestBlock() {
@@ -32,10 +32,28 @@ class Blockchain {
         newBlock.hash = newBlock.calculateHash();
         this.chain.push(newBlock);
     }
+
+    isChainValid() {
+        for (let i = 1; i < this.chain.length; i++) {
+            const currentBlock = this.chain[i];
+            const previousHash = this.chain[i - 1];
+
+            if (currentBlock !== currentBlock.calculateHash()) {
+                return false;
+            }
+
+            if(currentBlock.previousHash !== previousBlock.hash) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
 
 let transaction = new Blockchain();
 transaction.addBlock(new Block(1, "10/07/2017", { amount: 4 }));
 transaction.addBlock(new Block(2, "12/07/2017", { amount: 10 }));
 
-console.log(JSON.stringify(transaction, null, 4));
+console.log('Is blockchain valid', transaction.isChainValid());
+
+// console.log(JSON.stringify(transaction, null, 4));
