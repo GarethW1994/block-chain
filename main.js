@@ -6,7 +6,7 @@ class Block {
         this.timestamp = timestamp;
         this.data = data;
         this.previousHash = previousHash;
-        this.hash = "";
+        this.hash = this.calculateHash();
     }
 
     calculateHash() {
@@ -36,9 +36,9 @@ class Blockchain {
     isChainValid() {
         for (let i = 1; i < this.chain.length; i++) {
             const currentBlock = this.chain[i];
-            const previousHash = this.chain[i - 1];
+            const previousBlock = this.chain[i - 1];
 
-            if (currentBlock !== currentBlock.calculateHash()) {
+            if (currentBlock.hash !== currentBlock.calculateHash()) {
                 return false;
             }
 
